@@ -7,10 +7,15 @@ import {
   readMenuById as readMenuByIdService,
 } from "../services/menu.service";
 
-export const getAllMenus = async (_req: Request, res: Response): Promise<void> => {
+import { sendError, sendSuccess } from "../lib/response.lib";
+
+export const getAllMenus = async (
+  _req: Request,
+  res: Response,
+): Promise<void> => {
   const data = await readAllMenus();
 
-  res.status(200).json(data);
+  sendSuccess(res, 200, data);
 };
 
 export const getMenuById = async (
@@ -22,18 +27,21 @@ export const getMenuById = async (
   const foundMenu = await readMenuByIdService(id);
 
   if (foundMenu) {
-    res.json(foundMenu);
+    sendSuccess(res, 200, foundMenu);
   } else {
-    res.status(404).send("Menu Not Found");
+    sendError(res, 404, "NOT_FOUND", "Menu Not Found");
   }
 };
 
-export const createMenu = async (req: Request, res: Response): Promise<void> => {
+export const createMenu = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   const newMenu = req.body;
 
   const createdMenu = await createMenuService(newMenu);
 
-  res.status(201).json(createdMenu);
+  sendSuccess(res, 201, createdMenu);
 };
 
 export const updateMenu = async (
@@ -46,9 +54,9 @@ export const updateMenu = async (
   const result = await updateMenuService(id, updatedMenu);
 
   if (result) {
-    res.json(result);
+    sendSuccess(res, 200, result);
   } else {
-    res.status(404).send("Menu Not Found");
+    sendError(res, 404, "NOT_FOUND", "Menu Not Found");
   }
 };
 
@@ -61,8 +69,8 @@ export const deleteMenu = async (
   const deletedMenu = deleteMenuService(id);
 
   if (deletedMenu) {
-    res.json(deletedMenu);
+    sendSuccess(res, 200, deletedMenu);
   } else {
-    res.status(404).send("Menu Not Found");
+    sendError(res, 404, "NOT_FOUND", "Menu Not Found");
   }
 };
