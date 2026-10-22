@@ -1,39 +1,34 @@
-import data, { IMenu } from "../data";
+import { Menu } from "../generated/prisma/client";
+import { prisma } from "../lib/prisma.lib";
 
-export const readAllMenus = (): Array<IMenu> => {
-  return data.menus;
+export const readAllMenus = async (): Promise<Array<Menu>> => {
+  return await prisma.menu.findMany();
 };
 
-export const readMenuById = (id: number): IMenu | undefined => {
-  return data.menus.find((menu) => menu.id === id);
+export const readMenuById = async (id: number): Promise<Menu | null> => {
+  return await prisma.menu.findUnique({
+    where: { id },
+  });
 };
 
-export const createMenu = (newMenu: IMenu): IMenu => {
-  data.menus.push(newMenu);
-  return newMenu;
+export const createMenu = async (newMenu: Menu): Promise<Menu> => {
+  return await prisma.menu.create({
+    data: newMenu,
+  });
 };
 
-export const updateMenu = (
+export const updateMenu = async (
   id: number,
-  updatedMenu: Partial<IMenu>,
-): IMenu | undefined => {
-  const index = data.menus.findIndex((menu) => menu.id === id);
-
-  if (index !== -1) {
-    data.menus[index] = { ...data.menus[index], ...updatedMenu };
-    return data.menus[index];
-  }
-
-  return undefined;
+  updatedMenu: Partial<Menu>,
+): Promise<Menu | null> => {
+  return await prisma.menu.update({
+    where: { id },
+    data: updatedMenu,
+  });
 };
 
-export const deleteMenu = (id: number): IMenu | undefined => {
-  const index = data.menus.findIndex((menu) => menu.id === id);
-
-  if (index !== -1) {
-    const deletedMenu = data.menus.splice(index, 1);
-    return deletedMenu[0];
-  }
-
-  return undefined;
+export const deleteMenu = async (id: number): Promise<Menu | null> => {
+  return await prisma.menu.delete({
+    where: { id },
+  });
 };

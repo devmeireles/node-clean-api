@@ -7,19 +7,19 @@ import {
   readMenuById as readMenuByIdService,
 } from "../services/menu.service";
 
-export const getAllMenus = (_req: Request, res: Response): void => {
-  const data = readAllMenus();
+export const getAllMenus = async (_req: Request, res: Response): Promise<void> => {
+  const data = await readAllMenus();
 
   res.status(200).json(data);
 };
 
-export const getMenuById = (
+export const getMenuById = async (
   req: Request<{ id: string }>,
   res: Response,
-): void => {
+): Promise<void> => {
   const id = Number.parseInt(req.params.id, 10);
 
-  const foundMenu = readMenuByIdService(id);
+  const foundMenu = await readMenuByIdService(id);
 
   if (foundMenu) {
     res.json(foundMenu);
@@ -28,22 +28,22 @@ export const getMenuById = (
   }
 };
 
-export const createMenu = (req: Request, res: Response): void => {
+export const createMenu = async (req: Request, res: Response): Promise<void> => {
   const newMenu = req.body;
 
-  const createdMenu = createMenuService(newMenu);
+  const createdMenu = await createMenuService(newMenu);
 
   res.status(201).json(createdMenu);
 };
 
-export const updateMenu = (
+export const updateMenu = async (
   req: Request<{ id: string }>,
   res: Response,
-): void => {
+): Promise<void> => {
   const id = Number.parseInt(req.params.id, 10);
   const updatedMenu = req.body;
 
-  const result = updateMenuService(id, updatedMenu);
+  const result = await updateMenuService(id, updatedMenu);
 
   if (result) {
     res.json(result);
@@ -52,10 +52,10 @@ export const updateMenu = (
   }
 };
 
-export const deleteMenu = (
+export const deleteMenu = async (
   req: Request<{ id: string }>,
   res: Response,
-): void => {
+): Promise<void> => {
   const id = Number.parseInt(req.params.id, 10);
 
   const deletedMenu = deleteMenuService(id);
