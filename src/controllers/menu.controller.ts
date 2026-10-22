@@ -8,6 +8,11 @@ import {
 } from "../services/menu.service";
 
 import { sendError, sendSuccess } from "../lib/response.lib";
+import {
+  createMenuSchema,
+  menuIdSchema,
+  updateMenuSchema,
+} from "../schemas/menu.schema";
 
 export const getAllMenus = async (
   _req: Request,
@@ -22,24 +27,35 @@ export const getMenuById = async (
   req: Request<{ id: string }>,
   res: Response,
 ): Promise<void> => {
-  const id = Number.parseInt(req.params.id, 10);
+  const parsedId = menuIdSchema.safeParse(req.params);
 
-  const foundMenu = await readMenuByIdService(id);
-
-  if (foundMenu) {
-    sendSuccess(res, 200, foundMenu);
-  } else {
-    sendError(res, 404, "NOT_FOUND", "Menu Not Found");
+  if (!parsedId.success) {
+    sendError(res, 400, "INVALID_INPUT", "Invalid menu ID");
+    return;
   }
+
+  const menu = await readMenuByIdService(parsedId.data.id);
+
+  if (!menu) {
+    sendError(res, 404, "NOT_FOUND", "Menu Not Found");
+    return;
+  }
+
+  sendSuccess(res, 200, menu);
 };
 
 export const createMenu = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const newMenu = req.body;
+  const parsedNewMenu = createMenuSchema.safeParse(req.body);
 
-  const createdMenu = await createMenuService(newMenu);
+  if (!parsedNewMenu.success) {
+    sendError(res, 400, "INVALID_INPUT", "Invalid input data");
+    return;
+  }
+
+  const createdMenu = await createMenuService(parsedNewMenu.data);
 
   sendSuccess(res, 201, createdMenu);
 };
@@ -48,13 +64,27 @@ export const updateMenu = async (
   req: Request<{ id: string }>,
   res: Response,
 ): Promise<void> => {
-  const id = Number.parseInt(req.params.id, 10);
-  const updatedMenu = req.body;
+  const parsedId = menuIdSchema.safeParse(req.params);
 
-  const result = await updateMenuService(id, updatedMenu);
+  if (!parsedId.success) {
+    sendError(res, 400, "INVALID_INPUT", "Invalid menu ID");
+    return;
+  }
 
-  if (result) {
-    sendSuccess(res, 200, result);
+  const parsedMenu = updateMenuSchema.safeParse(req.body);
+
+  if (!parsedMenu.success) {
+    sendError(res, 400, "INVALID_INPUT", "Invalid input data");
+    return;
+  }
+
+  const updatedMenu = await updateMenuService(
+    parsedId.data.id,
+    parsedMenu.data,
+  );
+
+  if (updatedMenu) {
+    sendSuccess(res, 200, updatedMenu);
   } else {
     sendError(res, 404, "NOT_FOUND", "Menu Not Found");
   }
@@ -64,9 +94,14 @@ export const deleteMenu = async (
   req: Request<{ id: string }>,
   res: Response,
 ): Promise<void> => {
-  const id = Number.parseInt(req.params.id, 10);
+  const parsedId = menuIdSchema.safeParse(req.params);
 
-  const deletedMenu = deleteMenuService(id);
+  if (!parsedId.success) {
+    sendError(res, 400, "INVALID_INPUT", "Invalid menu ID");
+    return;
+  }
+
+  const deletedMenu = deleteMenuService(parsedId.data.id);
 
   if (deletedMenu) {
     sendSuccess(res, 200, deletedMenu);

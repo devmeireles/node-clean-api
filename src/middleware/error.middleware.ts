@@ -7,17 +7,31 @@ export const errorMiddleware: ErrorRequestHandler = (
   res,
   _next,
 ): void => {
+  if (
+    error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2025"
+  ) {
+    res.status(404).json({
+      success: false,
+      error: {
+        code: "NOT_FOUND",
+        message: "Menu not found",
+      },
+    });
+    return;
+  }
+
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    if (error.code === "P2025") {
-      res.status(404).json({
-        success: false,
-        error: {
-          code: "RESOURCE_NOT_FOUND",
-          message: "Resource not found",
-        },
-      });
-      return;
-    }
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      error: {
+        code: "DATABASE_ERROR",
+        message: "A database error occurred",
+      },
+    });
+    return;
   }
 
   console.error(error);
