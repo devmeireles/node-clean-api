@@ -5,8 +5,13 @@ export const errorMiddleware: ErrorRequestHandler = (
   error,
   _req,
   res,
-  _next,
+  next,
 ): void => {
+  if (res.headersSent) {
+    next(error);
+    return;
+  }
+
   if (
     error instanceof Prisma.PrismaClientKnownRequestError &&
     error.code === "P2025"
@@ -15,7 +20,7 @@ export const errorMiddleware: ErrorRequestHandler = (
       success: false,
       error: {
         code: "NOT_FOUND",
-        message: "Menu not found",
+        message: "Item not found",
       },
     });
     return;

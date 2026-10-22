@@ -101,11 +101,7 @@ export const deleteMenu = async (
     return;
   }
 
-  const deletedMenu = deleteMenuService(parsedId.data.id);
+  const deletedMenu = await deleteMenuService(parsedId.data.id);
 
-  if (deletedMenu) {
-    sendSuccess(res, 200, deletedMenu);
-  } else {
-    sendError(res, 404, "NOT_FOUND", "Menu Not Found");
-  }
+  sendSuccess(res, 200, deletedMenu);
 };
