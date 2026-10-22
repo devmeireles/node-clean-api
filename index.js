@@ -1,5 +1,7 @@
-const http = require("http");
-const url = require("url");
+const express = require("express");
+
+const app = express();
+app.use(express.json());
 
 const PORT = 3000;
 
@@ -16,113 +18,49 @@ let menus = [
   },
 ];
 
-const handleGetRequest = (req, res) => {
-  const id = parseInt(req.pathname.split("/")[2]);
+app.get("/menus", (req, res) => {
+  res.json(menus);
+});
 
-  if (!isNaN(id)) {
-    const foundMenu = menus.find((c) => c.id === id);
-    if (foundMenu) {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(foundMenu));
-    } else {
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("Menu Not Found");
-    }
-    return;
-  }
-
-  if (req.pathname === "/menus") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(menus));
+app.get("/menus/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const foundMenu = menus.find((c) => c.id === id);
+  if (foundMenu) {
+    res.json(foundMenu);
   } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
-  }
-};
-
-const handlePostRequest = (req, res) => {
-  if (req.pathname === "/menus") {
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk.toString();
-    });
-    req.on("end", () => {
-      const newMenu = JSON.parse(body);
-      menus.push(newMenu);
-      res.writeHead(201, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(newMenu));
-    });
-  } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
-  }
-};
-
-const handlePutRequest = (req, res) => {
-  if (req.pathname.startsWith("/menus/")) {
-    const id = parseInt(req.pathname.split("/")[2]);
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk.toString();
-    });
-    req.on("end", () => {
-      const updatedMenu = JSON.parse(body);
-      const index = menus.findIndex((c) => c.id === id);
-      if (index !== -1) {
-        menus[index] = { ...menus[index], ...updatedMenu };
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify(menus[index]));
-      } else {
-        res.writeHead(404, { "Content-Type": "text/plain" });
-        res.end("Menu Not Found");
-      }
-    });
-  } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
-  }
-};
-
-const handleDeleteRequest = (req, res) => {
-  if (req.pathname.startsWith("/menus/")) {
-    const id = parseInt(req.pathname.split("/")[2]);
-    const index = menus.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      const deletedMenu = menus.splice(index, 1);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(deletedMenu[0]));
-    } else {
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("Menu Not Found");
-    }
-  } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
-  }
-};
-
-const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true);
-
-  switch (req.method) {
-    case "GET":
-      handleGetRequest(parsedUrl, res);
-      break;
-    case "POST":
-      handlePostRequest(parsedUrl, req, res);
-      break;
-    case "PUT":
-      handlePutRequest(parsedUrl, req, res);
-      break;
-    case "DELETE":
-      handleDeleteRequest(parsedUrl, res);
-      break;
-    default:
-      res.writeHead(405, { "Content-Type": "text/plain" });
-      res.end("Method Not Allowed");
+    res.status(404).send("Menu Not Found");
   }
 });
 
-server.listen(PORT, () => {
+app.post("/menus", (req, res) => {
+  const newMenu = req.body;
+  menus.push(newMenu);
+  res.status(201).json(newMenu);
+});
+
+app.put("/menus/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const updatedMenu = req.body;
+  const index = menus.findIndex((c) => c.id === id);
+  if (index !== -1) {
+    menus[index] = { ...menus[index], ...updatedMenu };
+    res.json(menus[index]);
+  } else {
+    res.status(404).send("Menu Not Found");
+  }
+});
+
+app.delete("/menus/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = menus.findIndex((c) => c.id === id);
+  if (index !== -1) {
+    const deletedMenu = menus.splice(index, 1);
+    res.json(deletedMenu[0]);
+  } else {
+    res.status(404).send("Menu Not Found");
+  }
+});
+
+app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
