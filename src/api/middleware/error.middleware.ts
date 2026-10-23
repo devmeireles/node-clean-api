@@ -4,8 +4,8 @@ import type {
   Request,
   Response,
 } from "express";
-import { Prisma } from "../../generated/prisma/client";
-import { sendError } from "../lib/response.lib";
+import { Prisma } from "@/generated/prisma/client";
+import { sendError } from "@/api/lib/response.lib";
 
 export const errorMiddleware: ErrorRequestHandler = (
   error: unknown,

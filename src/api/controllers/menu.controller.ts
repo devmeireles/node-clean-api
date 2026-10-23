@@ -1,11 +1,11 @@
 import type { Request, Response, NextFunction } from "express";
-import type { MenuService } from "../../application/services/menu.service";
+import type { MenuService } from "@/application/services/menu.service";
 import {
   createMenuSchema,
   menuIdSchema,
   updateMenuSchema,
-} from "../schemas/menu.schema";
-import { sendError, sendSuccess } from "../lib/response.lib";
+} from "@/api/schemas/menu.schema";
+import { sendError, sendSuccess } from "@/api/lib/response.lib";
 
 export class MenuController {
   private readonly menuService: MenuService;

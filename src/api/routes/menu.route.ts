@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { registry } from "../lib/openapi.lib";
-import type { MenuController } from "../controllers/menu.controller";
+import { registry } from "@/api/lib/openapi.lib";
+import type { MenuController } from "@/api/controllers/menu.controller";
 import {
   createMenuSchema,
   menuIdSchema,
   updateMenuSchema,
-} from "../schemas/menu.schema";
+} from "@/api/schemas/menu.schema";
 
 export const createMenuRouter = (menuController: MenuController): Router => {
   const router = Router();

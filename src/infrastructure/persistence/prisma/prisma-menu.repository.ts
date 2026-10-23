@@ -2,10 +2,10 @@ import type {
   ICreateMenuData,
   IMenuRepository,
   IUpdateMenuData,
-} from "../../../model/menus/menu.repository";
-import { Menu as PrismaMenu } from "../../../generated/prisma/client";
+} from "@/model/menus/menu.repository";
+import { Menu as PrismaMenu } from "@/generated/prisma/client";
 import { prisma } from "./prisma.lib";
-import { Menu } from "../../../model/menus/menu.model";
+import { Menu } from "@/model/menus/menu.model";
 
 export class PrismaMenuRepository implements IMenuRepository {
   public async findAll(): Promise<Menu[]> {

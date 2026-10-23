@@ -1,11 +1,11 @@
 import express from "express";
 import { apiReference } from "@scalar/express-api-reference";
-import { MenuController } from "./api/controllers/menu.controller";
-import { errorMiddleware } from "./api/middleware/error.middleware";
-import { createMenuRouter } from "./api/routes/menu.route";
-import { generateOpenApiDocument } from "./api/lib/openapi.lib";
-import { MenuService } from "./application/services/menu.service";
-import { PrismaMenuRepository } from "./infrastructure/persistence/prisma/prisma-menu.repository";
+import { MenuController } from "@/api/controllers/menu.controller";
+import { errorMiddleware } from "@/api/middleware/error.middleware";
+import { createMenuRouter } from "@/api/routes/menu.route";
+import { generateOpenApiDocument } from "@/api/lib/openapi.lib";
+import { MenuService } from "@/application/services/menu.service";
+import { PrismaMenuRepository } from "@/infrastructure/persistence/prisma/prisma-menu.repository";
 
 const app = express();
 

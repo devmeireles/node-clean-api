@@ -1,10 +1,10 @@
-import { Menu } from "../../model/menus/menu.model";
+import { Menu } from "@/model/menus/menu.model";
 import {
   ICreateMenuData,
   IMenuRepository,
   IUpdateMenuData,
-} from "../../model/menus/menu.repository";
-import { ICreateMenuDto, IMenuDto, IUpdateMenuDto } from "../dtos/menu.dto";
+} from "@/model/menus/menu.repository";
+import { ICreateMenuDto, IMenuDto, IUpdateMenuDto } from "@/application/dtos/menu.dto";
 
 export class MenuService {
   private readonly menuRepository: IMenuRepository;
