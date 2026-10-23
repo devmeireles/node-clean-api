@@ -6,6 +6,7 @@ import {
   updateMenuSchema,
 } from "@/api/schemas/menu.schema";
 import { sendError, sendSuccess } from "@/api/lib/response.lib";
+import { paginationQuerySchema } from "@/api/schemas/pagination.schema";
 
 export class MenuController {
   private readonly menuService: MenuService;
@@ -15,14 +16,21 @@ export class MenuController {
   }
 
   public getAll = async (
-    _req: Request,
+    req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    try {
-      const menus = await this.menuService.getAll();
+    const parsedQuery = paginationQuerySchema.safeParse(req.query);
 
-      sendSuccess(res, 200, menus);
+    if (!parsedQuery.success) {
+      sendError(res, 400, "INVALID_QUERY", "Invalid pagination params");
+      return;
+    }
+
+    try {
+      const result = await this.menuService.getAll(parsedQuery.data);
+
+      sendSuccess(res, 200, result.data, result.meta);
     } catch (error) {
       next(error);
     }

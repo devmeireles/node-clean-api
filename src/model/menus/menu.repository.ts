@@ -1,3 +1,4 @@
+import { IPaginationParams, IPaginatedData } from "@/model/common/pagination";
 import type { Menu } from "./menu.model";
 
 export interface ICreateMenuData {
@@ -15,7 +16,7 @@ export interface IUpdateMenuData {
 }
 
 export interface IMenuRepository {
-  findAll(): Promise<Menu[]>;
+  findAll(params: IPaginationParams): Promise<IPaginatedData<Menu>>;
   findById(id: number): Promise<Menu | null>;
   create(data: ICreateMenuData): Promise<Menu>;
   update(id: number, data: IUpdateMenuData): Promise<Menu>;

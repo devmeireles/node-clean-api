@@ -6,12 +6,29 @@ import type {
 import { Menu as PrismaMenu } from "@/generated/prisma/client";
 import { prisma } from "./prisma.lib";
 import { Menu } from "@/model/menus/menu.model";
+import { IPaginatedData, IPaginationParams } from "@/model/common/pagination";
 
 export class PrismaMenuRepository implements IMenuRepository {
-  public async findAll(): Promise<Menu[]> {
-    const records = await prisma.menu.findMany();
+  public async findAll(
+    params: IPaginationParams,
+  ): Promise<IPaginatedData<Menu>> {
+    const skip = (params.page - 1) * params.limit;
 
-    return records.map((record) => this.toDomain(record));
+    const [records, totalItems] = await prisma.$transaction([
+      prisma.menu.findMany({
+        skip,
+        take: params.limit,
+        orderBy: {
+          id: "asc",
+        },
+      }),
+      prisma.menu.count(),
+    ]);
+
+    return {
+      items: records.map((record) => this.toDomain(record)),
+      totalItems,
+    };
   }
 
   public async findById(id: number): Promise<Menu | null> {

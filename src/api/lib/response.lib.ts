@@ -4,10 +4,12 @@ export const sendSuccess = <T>(
   res: Response,
   statusCode: number,
   data: T,
+  meta?: object,
 ): void => {
   res.status(statusCode).json({
     success: true,
     data,
+    ...(meta === undefined ? {} : { meta }),
   });
 };
 

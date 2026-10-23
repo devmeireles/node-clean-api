@@ -6,6 +6,7 @@ import {
   menuIdSchema,
   updateMenuSchema,
 } from "@/api/schemas/menu.schema";
+import { paginationQuerySchema } from "@/api/schemas/pagination.schema";
 
 export const createMenuRouter = (menuController: MenuController): Router => {
   const router = Router();
@@ -21,8 +22,16 @@ export const createMenuRouter = (menuController: MenuController): Router => {
     path: "/api/menus",
     summary: "Get all menus",
     tags: ["Menus"],
+    request: {
+      query: paginationQuerySchema,
+    },
     responses: {
-      200: { description: "Menus retrieved" },
+      200: {
+        description: "Paginated menus retrieved successfully",
+      },
+      400: {
+        description: "Invalid pagination parameters",
+      },
     },
   });
 

@@ -4,7 +4,13 @@ import {
   IMenuRepository,
   IUpdateMenuData,
 } from "@/model/menus/menu.repository";
-import { ICreateMenuDto, IMenuDto, IUpdateMenuDto } from "@/application/dtos/menu.dto";
+import {
+  ICreateMenuDto,
+  IMenuDto,
+  IUpdateMenuDto,
+} from "@/application/dtos/menu.dto";
+import { IPaginatedData, IPaginationParams } from "@/model/common/pagination";
+import { IPaginatedResult } from "../common/pagination";
 
 export class MenuService {
   private readonly menuRepository: IMenuRepository;
@@ -13,10 +19,27 @@ export class MenuService {
     this.menuRepository = menuRepository;
   }
 
-  public async getAll(): Promise<IMenuDto[]> {
-    const menus = await this.menuRepository.findAll();
+  public async getAll(
+    params: IPaginationParams,
+  ): Promise<IPaginatedResult<IMenuDto>> {
+    const result: IPaginatedData<Menu> =
+      await this.menuRepository.findAll(params);
 
-    return menus.map((menu) => this.toDto(menu));
+    const totalPages = Math.ceil(result.totalItems / params.limit);
+
+    return {
+      data: result.items.map((menu) => this.toDto(menu)),
+      meta: {
+        pagination: {
+          page: params.page,
+          limit: params.limit,
+          totalItems: result.totalItems,
+          totalPages,
+          hasNextPage: params.page < totalPages,
+          hasPreviousPage: params.page > 1,
+        },
+      },
+    };
   }
 
   public async getById(id: number): Promise<IMenuDto | null> {
