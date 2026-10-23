@@ -6,6 +6,7 @@ import type {
 } from "express";
 import { Prisma } from "@/generated/prisma/client";
 import { sendError } from "@/api/lib/response.lib";
+import { AppError } from "@/application/errors";
 
 export const errorMiddleware: ErrorRequestHandler = (
   error: unknown,
@@ -15,6 +16,11 @@ export const errorMiddleware: ErrorRequestHandler = (
 ): void => {
   if (res.headersSent) {
     next(error);
+    return;
+  }
+
+  if (error instanceof AppError) {
+    sendError(res, error.statusCode, error.code, error.message);
     return;
   }
 

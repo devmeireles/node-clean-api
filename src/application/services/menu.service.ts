@@ -2,7 +2,6 @@ import { Menu } from "@/model/menus/menu.model";
 import {
   ICreateMenuData,
   IMenuRepository,
-  IUpdateMenuData,
 } from "@/model/menus/menu.repository";
 import {
   ICreateMenuDto,
@@ -11,11 +10,13 @@ import {
 } from "@/application/dtos/menu.dto";
 import { IPaginatedData, IPaginationParams } from "@/model/common/pagination";
 import { IPaginatedResult } from "../common/pagination";
+import { NotFoundError, ValidationError } from "@/application/errors";
+import { DomainValidationError } from "@/model/common/domain-validation.error";
 
 export class MenuService {
   private readonly menuRepository: IMenuRepository;
 
-  constructor(menuRepository: IMenuRepository) {
+  public constructor(menuRepository: IMenuRepository) {
     this.menuRepository = menuRepository;
   }
 
@@ -49,13 +50,7 @@ export class MenuService {
   }
 
   public async create(data: ICreateMenuDto): Promise<IMenuDto> {
-    const menu = new Menu(
-      0,
-      data.name,
-      data.price,
-      data.minPeople,
-      data.maxPeople,
-    );
+    const menu = this.buildMenu(0, data);
 
     const repositoryData: ICreateMenuData = {
       name: menu.name,
@@ -65,37 +60,39 @@ export class MenuService {
     };
 
     const createdMenu = await this.menuRepository.create(repositoryData);
+
     return this.toDto(createdMenu);
   }
 
   public async update(id: number, data: IUpdateMenuDto): Promise<IMenuDto> {
     const existingMenu = await this.menuRepository.findById(id);
 
-    if (!existingMenu) {
-      throw new Error("Menu not found");
+    if (existingMenu === null) {
+      throw new NotFoundError("Menu not found");
     }
 
-    const updatedMenu = new Menu(
-      existingMenu.id,
-      data.name ?? existingMenu.name,
-      data.price ?? existingMenu.price,
-      data.minPeople ?? existingMenu.minPeople,
-      data.maxPeople ?? existingMenu.maxPeople,
-    );
-
-    const repositoryData: IUpdateMenuData = {
-      name: updatedMenu.name,
-      price: updatedMenu.price,
-      minPeople: updatedMenu.minPeople,
-      maxPeople: updatedMenu.maxPeople,
+    const merged = {
+      name: data.name ?? existingMenu.name,
+      price: data.price ?? existingMenu.price,
+      minPeople: data.minPeople ?? existingMenu.minPeople,
+      maxPeople: data.maxPeople ?? existingMenu.maxPeople,
     };
 
-    const savedMenu = await this.menuRepository.update(id, repositoryData);
+    const menu = this.buildMenu(existingMenu.id, merged);
+
+    const savedMenu = await this.menuRepository.update(id, {
+      name: menu.name,
+      price: menu.price,
+      minPeople: menu.minPeople,
+      maxPeople: menu.maxPeople,
+    });
+
     return this.toDto(savedMenu);
   }
 
   public async delete(id: number): Promise<IMenuDto> {
     const deletedMenu = await this.menuRepository.delete(id);
+
     return this.toDto(deletedMenu);
   }
 
@@ -107,5 +104,26 @@ export class MenuService {
       minPeople: menu.minPeople,
       maxPeople: menu.maxPeople,
     };
+  }
+
+  private buildMenu(
+    id: number,
+    data: ICreateMenuDto,
+  ): Menu {
+    try {
+      return new Menu(
+        id,
+        data.name,
+        data.price,
+        data.minPeople,
+        data.maxPeople,
+      );
+    } catch (error) {
+      if (error instanceof DomainValidationError) {
+        throw new ValidationError(error.message);
+      }
+
+      throw error;
+    }
   }
 }

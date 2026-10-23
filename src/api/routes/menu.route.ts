@@ -3,7 +3,10 @@ import { registry } from "@/api/lib/openapi.lib";
 import type { MenuController } from "@/api/controllers/menu.controller";
 import {
   createMenuSchema,
+  errorResponseSchema,
   menuIdSchema,
+  menuResponseSchema,
+  menusResponseSchema,
   updateMenuSchema,
 } from "@/api/schemas/menu.schema";
 import { paginationQuerySchema } from "@/api/schemas/pagination.schema";
@@ -28,9 +31,19 @@ export const createMenuRouter = (menuController: MenuController): Router => {
     responses: {
       200: {
         description: "Paginated menus retrieved successfully",
+        content: {
+          "application/json": {
+            schema: menusResponseSchema,
+          },
+        },
       },
       400: {
         description: "Invalid pagination parameters",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
       },
     },
   });
@@ -44,8 +57,30 @@ export const createMenuRouter = (menuController: MenuController): Router => {
       params: menuIdSchema,
     },
     responses: {
-      200: { description: "Menu retrieved" },
-      404: { description: "Menu not found" },
+      200: {
+        description: "Menu retrieved successfully",
+        content: {
+          "application/json": {
+            schema: menuResponseSchema,
+          },
+        },
+      },
+      400: {
+        description: "Invalid menu ID",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
+      },
+      404: {
+        description: "Menu not found",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
+      },
     },
   });
 
@@ -65,8 +100,22 @@ export const createMenuRouter = (menuController: MenuController): Router => {
       },
     },
     responses: {
-      201: { description: "Menu created" },
-      400: { description: "Invalid input" },
+      201: {
+        description: "Menu created successfully",
+        content: {
+          "application/json": {
+            schema: menuResponseSchema,
+          },
+        },
+      },
+      400: {
+        description: "Invalid menu data",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
+      },
     },
   });
 
@@ -87,9 +136,30 @@ export const createMenuRouter = (menuController: MenuController): Router => {
       },
     },
     responses: {
-      200: { description: "Menu updated" },
-      400: { description: "Invalid input" },
-      404: { description: "Menu not found" },
+      200: {
+        description: "Menu updated successfully",
+        content: {
+          "application/json": {
+            schema: menuResponseSchema,
+          },
+        },
+      },
+      400: {
+        description: "Invalid menu ID or menu data",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
+      },
+      404: {
+        description: "Menu not found",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
+      },
     },
   });
 
@@ -102,8 +172,30 @@ export const createMenuRouter = (menuController: MenuController): Router => {
       params: menuIdSchema,
     },
     responses: {
-      200: { description: "Menu deleted" },
-      404: { description: "Menu not found" },
+      200: {
+        description: "Menu deleted successfully",
+        content: {
+          "application/json": {
+            schema: menuResponseSchema,
+          },
+        },
+      },
+      400: {
+        description: "Invalid menu ID",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
+      },
+      404: {
+        description: "Menu not found",
+        content: {
+          "application/json": {
+            schema: errorResponseSchema,
+          },
+        },
+      },
     },
   });
 
