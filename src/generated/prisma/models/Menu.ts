@@ -29,29 +29,39 @@ export type AggregateMenu = {
 export type MenuAvgAggregateOutputType = {
   id: number | null
   price: number | null
+  minPeople: number | null
+  maxPeople: number | null
 }
 
 export type MenuSumAggregateOutputType = {
   id: number | null
   price: number | null
+  minPeople: number | null
+  maxPeople: number | null
 }
 
 export type MenuMinAggregateOutputType = {
   id: number | null
   name: string | null
   price: number | null
+  minPeople: number | null
+  maxPeople: number | null
 }
 
 export type MenuMaxAggregateOutputType = {
   id: number | null
   name: string | null
   price: number | null
+  minPeople: number | null
+  maxPeople: number | null
 }
 
 export type MenuCountAggregateOutputType = {
   id: number
   name: number
   price: number
+  minPeople: number
+  maxPeople: number
   _all: number
 }
 
@@ -59,29 +69,39 @@ export type MenuCountAggregateOutputType = {
 export type MenuAvgAggregateInputType = {
   id?: true
   price?: true
+  minPeople?: true
+  maxPeople?: true
 }
 
 export type MenuSumAggregateInputType = {
   id?: true
   price?: true
+  minPeople?: true
+  maxPeople?: true
 }
 
 export type MenuMinAggregateInputType = {
   id?: true
   name?: true
   price?: true
+  minPeople?: true
+  maxPeople?: true
 }
 
 export type MenuMaxAggregateInputType = {
   id?: true
   name?: true
   price?: true
+  minPeople?: true
+  maxPeople?: true
 }
 
 export type MenuCountAggregateInputType = {
   id?: true
   name?: true
   price?: true
+  minPeople?: true
+  maxPeople?: true
   _all?: true
 }
 
@@ -175,6 +195,8 @@ export type MenuGroupByOutputType = {
   id: number
   name: string
   price: number
+  minPeople: number
+  maxPeople: number
   _count: MenuCountAggregateOutputType | null
   _avg: MenuAvgAggregateOutputType | null
   _sum: MenuSumAggregateOutputType | null
@@ -204,12 +226,16 @@ export type MenuWhereInput = {
   id?: Prisma.IntFilter<"Menu"> | number
   name?: Prisma.StringFilter<"Menu"> | string
   price?: Prisma.FloatFilter<"Menu"> | number
+  minPeople?: Prisma.IntFilter<"Menu"> | number
+  maxPeople?: Prisma.IntFilter<"Menu"> | number
 }
 
 export type MenuOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  minPeople?: Prisma.SortOrder
+  maxPeople?: Prisma.SortOrder
 }
 
 export type MenuWhereUniqueInput = Prisma.AtLeast<{
@@ -219,12 +245,16 @@ export type MenuWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MenuWhereInput | Prisma.MenuWhereInput[]
   name?: Prisma.StringFilter<"Menu"> | string
   price?: Prisma.FloatFilter<"Menu"> | number
+  minPeople?: Prisma.IntFilter<"Menu"> | number
+  maxPeople?: Prisma.IntFilter<"Menu"> | number
 }, "id">
 
 export type MenuOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  minPeople?: Prisma.SortOrder
+  maxPeople?: Prisma.SortOrder
   _count?: Prisma.MenuCountOrderByAggregateInput
   _avg?: Prisma.MenuAvgOrderByAggregateInput
   _max?: Prisma.MenuMaxOrderByAggregateInput
@@ -239,73 +269,99 @@ export type MenuScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Menu"> | number
   name?: Prisma.StringWithAggregatesFilter<"Menu"> | string
   price?: Prisma.FloatWithAggregatesFilter<"Menu"> | number
+  minPeople?: Prisma.IntWithAggregatesFilter<"Menu"> | number
+  maxPeople?: Prisma.IntWithAggregatesFilter<"Menu"> | number
 }
 
 export type MenuCreateInput = {
   name: string
   price: number
+  minPeople: number
+  maxPeople: number
 }
 
 export type MenuUncheckedCreateInput = {
   id?: number
   name: string
   price: number
+  minPeople: number
+  maxPeople: number
 }
 
 export type MenuUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  minPeople?: Prisma.IntFieldUpdateOperationsInput | number
+  maxPeople?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MenuUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  minPeople?: Prisma.IntFieldUpdateOperationsInput | number
+  maxPeople?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MenuCreateManyInput = {
   id?: number
   name: string
   price: number
+  minPeople: number
+  maxPeople: number
 }
 
 export type MenuUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  minPeople?: Prisma.IntFieldUpdateOperationsInput | number
+  maxPeople?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MenuUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  minPeople?: Prisma.IntFieldUpdateOperationsInput | number
+  maxPeople?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MenuCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  minPeople?: Prisma.SortOrder
+  maxPeople?: Prisma.SortOrder
 }
 
 export type MenuAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  minPeople?: Prisma.SortOrder
+  maxPeople?: Prisma.SortOrder
 }
 
 export type MenuMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  minPeople?: Prisma.SortOrder
+  maxPeople?: Prisma.SortOrder
 }
 
 export type MenuMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  minPeople?: Prisma.SortOrder
+  maxPeople?: Prisma.SortOrder
 }
 
 export type MenuSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  minPeople?: Prisma.SortOrder
+  maxPeople?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -334,27 +390,35 @@ export type MenuSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   name?: boolean
   price?: boolean
+  minPeople?: boolean
+  maxPeople?: boolean
 }, ExtArgs["result"]["menu"]>
 
 export type MenuSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   price?: boolean
+  minPeople?: boolean
+  maxPeople?: boolean
 }, ExtArgs["result"]["menu"]>
 
 export type MenuSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   price?: boolean
+  minPeople?: boolean
+  maxPeople?: boolean
 }, ExtArgs["result"]["menu"]>
 
 export type MenuSelectScalar = {
   id?: boolean
   name?: boolean
   price?: boolean
+  minPeople?: boolean
+  maxPeople?: boolean
 }
 
-export type MenuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price", ExtArgs["result"]["menu"]>
+export type MenuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price" | "minPeople" | "maxPeople", ExtArgs["result"]["menu"]>
 
 export type $MenuPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Menu"
@@ -363,6 +427,8 @@ export type $MenuPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: number
     name: string
     price: number
+    minPeople: number
+    maxPeople: number
   }, ExtArgs["result"]["menu"]>
   composites: {}
 }
@@ -789,6 +855,8 @@ export interface MenuFieldRefs {
   readonly id: Prisma.FieldRef<"Menu", 'Int'>
   readonly name: Prisma.FieldRef<"Menu", 'String'>
   readonly price: Prisma.FieldRef<"Menu", 'Float'>
+  readonly minPeople: Prisma.FieldRef<"Menu", 'Int'>
+  readonly maxPeople: Prisma.FieldRef<"Menu", 'Int'>
 }
     
 

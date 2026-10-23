@@ -70,7 +70,9 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const MenuScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  price: 'price'
+  price: 'price',
+  minPeople: 'minPeople',
+  maxPeople: 'maxPeople'
 } as const
 
 export type MenuScalarFieldEnum = (typeof MenuScalarFieldEnum)[keyof typeof MenuScalarFieldEnum]
