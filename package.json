@@ -13,7 +13,8 @@
     "lint:fix": "eslint src --fix",
     "typecheck": "tsc --noEmit",
     "check": "npm run format:check && npm run lint && npm run typecheck",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "prepare": "husky"
   },
   "author": "",
@@ -35,14 +36,18 @@
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.5",
     "@types/swagger-jsdoc": "^6.0.4",
+    "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "prettier": "^3.9.10",
     "prisma": "^7.10.1",
     "tsc-alias": "^1.9.9",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0"
+    "typescript-eslint": "^8.72.0",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^5.0.5"
   }
 }
