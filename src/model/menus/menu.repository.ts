@@ -1,4 +1,7 @@
-import { IPaginationParams, IPaginatedData } from "@/model/common/pagination";
+import type {
+  IPaginationParams,
+  IPaginatedData,
+} from "@/model/common/pagination";
 import type { Menu } from "./menu.model";
 
 export interface ICreateMenuData {

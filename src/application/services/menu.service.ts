@@ -1,15 +1,18 @@
 import { Menu } from "@/model/menus/menu.model";
-import {
+import type {
   ICreateMenuData,
   IMenuRepository,
 } from "@/model/menus/menu.repository";
-import {
+import type {
   ICreateMenuDto,
   IMenuDto,
   IUpdateMenuDto,
 } from "@/application/dtos/menu.dto";
-import { IPaginatedData, IPaginationParams } from "@/model/common/pagination";
-import { IPaginatedResult } from "../common/pagination";
+import type {
+  IPaginatedData,
+  IPaginationParams,
+} from "@/model/common/pagination";
+import type { IPaginatedResult } from "../common/pagination";
 import { NotFoundError, ValidationError } from "@/application/errors";
 import { DomainValidationError } from "@/model/common/domain-validation.error";
 
@@ -106,10 +109,7 @@ export class MenuService {
     };
   }
 
-  private buildMenu(
-    id: number,
-    data: ICreateMenuDto,
-  ): Menu {
+  private buildMenu(id: number, data: ICreateMenuDto): Menu {
     try {
       return new Menu(
         id,

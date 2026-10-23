@@ -3,10 +3,13 @@ import type {
   IMenuRepository,
   IUpdateMenuData,
 } from "@/model/menus/menu.repository";
-import { Menu as PrismaMenu } from "@/generated/prisma/client";
+import type { Menu as PrismaMenu } from "@/generated/prisma/client";
 import { prisma } from "./prisma.lib";
 import { Menu } from "@/model/menus/menu.model";
-import { IPaginatedData, IPaginationParams } from "@/model/common/pagination";
+import type {
+  IPaginatedData,
+  IPaginationParams,
+} from "@/model/common/pagination";
 
 export class PrismaMenuRepository implements IMenuRepository {
   public async findAll(
